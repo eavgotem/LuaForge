@@ -1,0 +1,294 @@
+--- src/index.css (原始)
+@import "tailwindcss";
+
+
++++ src/index.css (修改后)
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Unbounded", "Sora", system-ui, sans-serif;
+  --font-body: "Sora", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-ink-950: #070a12;
+  --color-ink-900: #0b0f1a;
+  --color-ink-850: #0e1422;
+  --color-ink-800: #121828;
+  --color-ink-750: #151d30;
+  --color-ink-700: #182034;
+  --color-ink-600: #202b46;
+
+  --color-line: #22304e;
+  --color-line-soft: #1a2439;
+
+  --color-fog: #e8edf6;
+  --color-mute: #8e9bb3;
+  --color-dim: #5f6c87;
+
+  --color-amber: #ffb454;
+  --color-ember: #ff8b4a;
+  --color-mint: #48d597;
+  --color-aqua: #45c4d8;
+  --color-rose: #ff7a93;
+
+  /* Luau syntax palette */
+  --color-skw: #ff7a93;
+  --color-sstr: #e7b87c;
+  --color-snum: #8fe3a0;
+  --color-sbi: #52d6c2;
+  --color-sfn: #f2d478;
+  --color-scm: #5c6a86;
+  --color-stx: #d8dfef;
+  --color-spn: #7b87a3;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ink-900);
+  color: var(--color-fog);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(255, 180, 84, 0.28);
+  color: #fff6e8;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 2px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 768px) {
+  .wrap {
+    padding-inline: 2rem;
+  }
+}
+
+/* ---------- scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s cubic-bezier(0.2, 0.65, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.65, 0.2, 1);
+  transition-delay: var(--rd, 0ms);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* line-mask reveal for display headings */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.mask-inner {
+  display: block;
+  transform: translateY(115%);
+  transition: transform 0.85s cubic-bezier(0.19, 0.7, 0.16, 1);
+  transition-delay: var(--rd, 0ms);
+}
+.reveal.is-in .mask-inner,
+.is-in .mask-inner {
+  transform: translateY(0);
+}
+
+/* ---------- keyframes ---------- */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  overflow: hidden;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--speed, 32s) linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes blinkc {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.cursor-block {
+  animation: blinkc 1.05s steps(1) infinite;
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(-9px) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translateY(11px) rotate(var(--rot, 0deg));
+  }
+}
+.floaty {
+  animation: floaty var(--dur, 9s) ease-in-out infinite;
+}
+
+@keyframes pulseglow {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.pulseglow {
+  animation: pulseglow 2.6s ease-in-out infinite;
+}
+
+@keyframes riseline {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.riseline {
+  animation: riseline 0.35s ease both;
+}
+
+@keyframes spincw {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spincw {
+  animation: spincw 26s linear infinite;
+}
+
+/* ---------- ambient layers ---------- */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(140, 163, 205, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(140, 163, 205, 0.055) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(ellipse 95% 72% at 50% 0%, black 25%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 95% 72% at 50% 0%, black 25%, transparent 78%);
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
+}
+
+/* ---------- code scrollbars ---------- */
+.code-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.code-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.code-scroll::-webkit-scrollbar-thumb {
+  background: #24304d;
+  border-radius: 99px;
+}
+.code-scroll::-webkit-scrollbar-thumb:hover {
+  background: #33436b;
+}
+
+/* thin scrollbars everywhere else */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: #0b0f1a;
+}
+*::-webkit-scrollbar-thumb {
+  background: #1c2740;
+  border-radius: 99px;
+  border: 2px solid #0b0f1a;
+}
+
+/* ---------- accordion ---------- */
+.acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.2, 0.65, 0.2, 1);
+}
+.acc-panel.open {
+  grid-template-rows: 1fr;
+}
+.acc-panel > div {
+  overflow: hidden;
+}
+
+/* underline slide for nav */
+.navlink {
+  position: relative;
+}
+.navlink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 100%;
+  background: var(--color-amber);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.2, 0.65, 0.2, 1);
+}
+.navlink:hover::after {
+  transform: scaleX(1);
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee-track,
+  .floaty,
+  .pulseglow,
+  .spincw,
+  .cursor-block {
+    animation: none !important;
+  }
+  .riseline {
+    animation-duration: 0.01s !important;
+  }
+  .reveal,
+  .mask-inner {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
